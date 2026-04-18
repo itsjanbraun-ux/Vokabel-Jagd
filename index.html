@@ -263,7 +263,32 @@ body {
   75%      { transform: translate(-2px, 1px); }
 }
 
-/* ===== START LOOT PREVIEW ===== */
+/* ===== HIGHSCORE ===== */
+.highscore-display {
+  font-family: 'Bungee', cursive;
+  font-size: 0.85rem;
+  color: #ffd700;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(255,215,0,0.4);
+}
+.highscore-display span {
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+.new-highscore-banner {
+  font-family: 'Bungee Shade', 'Bungee', cursive;
+  font-size: clamp(1rem, 3vw, 1.4rem);
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.8);
+  animation: newHsBounce 0.6s ease-out;
+  letter-spacing: 2px;
+}
+@keyframes newHsBounce {
+  0%   { transform: scale(0.5); opacity: 0; }
+  70%  { transform: scale(1.15); }
+  100% { transform: scale(1); opacity: 1; }
+}
 .start-loot-preview {
   font-size: 1.8rem;
   letter-spacing: 8px;
@@ -757,6 +782,7 @@ body {
 
 <!-- ===== START SCREEN ===== -->
 <div id="startScreen" class="screen active">
+  <div class="highscore-display" id="startHighscore">&#x1F3C6; HIGHSCORE: <span>0</span></div>
   <div class="game-title">LOOT<br>HUNTING</div>
   <div class="game-subtitle">&#x26A1; LOOTE ODER VERLIERE ALLES! &#x26A1;</div>
   <div class="trex-ascii">&#x1F977;</div>
@@ -809,6 +835,7 @@ body {
 <div id="resultScreen" class="screen">
   <div class="result-emoji" id="resultEmoji"></div>
   <div class="result-title" id="resultTitle"></div>
+  <div id="newHighscoreBanner" style="display:none;" class="new-highscore-banner">&#x1F3C6; NEUER HIGHSCORE! &#x1F3C6;</div>
   <div class="result-stats" id="resultStats"></div>
   <div class="mistakes-list" id="mistakesList" style="display:none;"></div>
   <div class="start-buttons">
@@ -935,10 +962,25 @@ function init() {
       }
     }
   } catch(e) { /* ignore */ }
+  loadHighscore();
 }
 
 function saveVocab() {
   storageSet("trex_vocab", JSON.stringify(vocab));
+}
+
+// ===== HIGHSCORE =====
+var highscore = 0;
+
+function loadHighscore() {
+  var saved = storageGet("loot_highscore");
+  if (saved) highscore = parseInt(saved, 10) || 0;
+  updateHighscoreDisplay();
+}
+
+function updateHighscoreDisplay() {
+  var el = document.getElementById("startHighscore");
+  if (el) el.innerHTML = "\uD83C\uDFC6 HIGHSCORE: <span>" + highscore + "</span>";
 }
 
 // ===== SCREENS =====
@@ -1218,7 +1260,16 @@ function showFeedback(text, type) {
 
 function endGame(survived) {
   clearInterval(timerInterval);
+  document.getElementById("gameScreen").classList.remove("timer-shake");
   showScreen("resultScreen");
+
+  var isNewHighscore = gameState.score > highscore;
+  if (isNewHighscore) {
+    highscore = gameState.score;
+    storageSet("loot_highscore", String(highscore));
+    updateHighscoreDisplay();
+  }
+  document.getElementById("newHighscoreBanner").style.display = isNewHighscore ? "block" : "none";
 
   var total = gameState.correct + gameState.wrong;
   var pct = total > 0 ? Math.round((gameState.correct / total) * 100) : 0;
@@ -1239,6 +1290,7 @@ function endGame(survived) {
 
   document.getElementById("resultStats").innerHTML =
     '<div class="stat-row"><span class="stat-label">Punkte</span><span class="stat-value">' + gameState.score + '</span></div>' +
+    '<div class="stat-row"><span class="stat-label">Highscore</span><span class="stat-value">\uD83C\uDFC6 ' + highscore + '</span></div>' +
     '<div class="stat-row"><span class="stat-label">Richtig</span><span class="stat-value">' + gameState.correct + ' / ' + total + '</span></div>' +
     '<div class="stat-row"><span class="stat-label">Quote</span><span class="stat-value">' + pct + '%</span></div>' +
     '<div class="stat-row"><span class="stat-label">Beste Serie</span><span class="stat-value">\uD83D\uDD25 ' + gameState.maxStreak + '</span></div>';
