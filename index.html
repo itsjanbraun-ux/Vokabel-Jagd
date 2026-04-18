@@ -174,140 +174,109 @@ body {
   font-weight: 700;
 }
 
-/* ===== CHASE SCENE ===== */
-.chase-container {
+/* ===== LOOT SCENE ===== */
+.loot-scene {
   width: 100%;
   height: 120px;
-  position: relative;
   background: linear-gradient(0deg, #0a051a 0%, #0d0d2e 60%, #12082a 100%);
-  overflow: hidden;
-  flex-shrink: 0;
   border-bottom: 2px solid rgba(139,68,247,0.3);
-}
-
-.ground {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 25px;
-  background: linear-gradient(0deg, #1a0a3a, #2a1a5a);
-  border-top: 2px solid rgba(139,68,247,0.4);
-}
-
-/* ===== STORM WALL ===== */
-.storm-wall {
-  position: absolute;
-  top: 0; bottom: 0;
-  width: 55px;
-  background: linear-gradient(90deg,
-    rgba(139,68,247,0.95) 0%,
-    rgba(100,20,200,0.65) 50%,
-    transparent 100%);
-  border-right: 2px solid rgba(200,130,255,0.9);
-  box-shadow: 6px 0 30px rgba(139,68,247,0.8), inset -4px 0 15px rgba(255,150,255,0.3);
-  transition: left 0.5s ease;
-  animation: stormPulse 2s ease-in-out infinite;
-}
-@keyframes stormPulse {
-  0%,100% { opacity: 0.85; box-shadow: 6px 0 25px rgba(139,68,247,0.7); }
-  50%      { opacity: 1;    box-shadow: 6px 0 50px rgba(139,68,247,1), 6px 0 80px rgba(200,100,255,0.4); }
-}
-
-/* ===== SCROLLING TREES ===== */
-.tree-scroll {
-  position: absolute;
-  bottom: 22px;
-  left: 0;
   display: flex;
-  gap: 90px;
-  align-items: flex-end;
-  white-space: nowrap;
-  opacity: 0.45;
-  animation: treeScroll 7s linear infinite;
-}
-.t-tree { line-height: 1; }
-@keyframes treeScroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  align-items: center;
+  padding: 0 20px;
+  gap: 20px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
-/* ===== FORTNITE CHARACTER ===== */
-.fn-character {
-  position: absolute;
-  bottom: 25px;
-  width: 28px;
-  transition: left 0.5s ease;
+.ninja-wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-}
-.fn-upper { display: flex; flex-direction: column; align-items: center; }
-.fn-helmet {
-  width: 22px; height: 10px;
-  background: linear-gradient(135deg, #00d4ff, #0052cc);
-  border-radius: 4px 4px 0 0;
-}
-.fn-head {
-  width: 20px; height: 18px;
-  background: #f5c48a;
-  border-radius: 2px;
-  position: relative;
-}
-.fn-visor {
-  position: absolute;
-  top: 5px; left: 2px; right: 2px; height: 6px;
-  background: rgba(0,220,255,0.85);
-  border-radius: 1px;
-  box-shadow: 0 0 6px rgba(0,212,255,1);
-}
-.fn-body {
-  width: 24px; height: 20px;
-  background: linear-gradient(180deg, #1a8cff, #003a8c);
-  border-radius: 2px;
-  position: relative;
-}
-.fn-backpack {
-  position: absolute;
-  right: -7px; top: 2px;
-  width: 7px; height: 14px;
-  background: #8b44f7;
-  border-radius: 2px;
-  box-shadow: 0 0 5px rgba(139,68,247,0.8);
-}
-.fn-legs {
-  display: flex;
   gap: 4px;
-  margin-top: 1px;
-}
-.fn-leg {
-  width: 9px; height: 17px;
-  background: linear-gradient(180deg, #1a5276, #0a1a30);
-  border-radius: 2px;
-  transform-origin: top center;
-}
-.fn-character.running .fn-leg-l { animation: legL 0.35s ease-in-out infinite; }
-.fn-character.running .fn-leg-r { animation: legR 0.35s ease-in-out infinite; }
-@keyframes legL {
-  0%,100% { transform: rotate(-18deg); }
-  50%      { transform: rotate(18deg); }
-}
-@keyframes legR {
-  0%,100% { transform: rotate(18deg); }
-  50%      { transform: rotate(-18deg); }
-}
-.fn-character.running .fn-upper { animation: bodyBob 0.35s ease-in-out infinite; }
-@keyframes bodyBob {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
+  flex-shrink: 0;
 }
 
-/* ===== SCREEN SHAKE ===== */
-.chase-container.storm-danger { animation: screenShake 0.25s ease-in-out infinite; }
+.ninja-char {
+  font-size: 3rem;
+  filter: drop-shadow(0 0 12px rgba(0,212,255,0.8));
+  animation: ninjaIdle 2s ease-in-out infinite;
+  display: inline-block;
+}
+@keyframes ninjaIdle {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+.ninja-char.got-loot { animation: ninjaJump 0.4s ease-out forwards; }
+@keyframes ninjaJump {
+  0%   { transform: translateY(0) scale(1); }
+  40%  { transform: translateY(-18px) scale(1.2); }
+  100% { transform: translateY(0) scale(1); }
+}
+.ninja-char.lost-loot { animation: ninjaHit 0.4s ease-out forwards; }
+@keyframes ninjaHit {
+  0%,100% { transform: translateX(0); }
+  25%     { transform: translateX(-8px); }
+  75%     { transform: translateX(8px); }
+}
+
+.ninja-label {
+  font-family: 'Bungee', cursive;
+  font-size: 0.6rem;
+  color: #00d4ff;
+  letter-spacing: 2px;
+}
+
+.loot-display {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  min-height: 50px;
+}
+
+.loot-icon {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 0 6px rgba(255,215,0,0.6));
+  animation: lootAppear 0.3s ease-out;
+  display: inline-block;
+}
+@keyframes lootAppear {
+  0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+  70%  { transform: scale(1.3) rotate(5deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.loot-empty-hint {
+  font-family: 'Bungee', cursive;
+  font-size: 0.75rem;
+  color: rgba(200,160,255,0.4);
+  letter-spacing: 2px;
+}
+
+/* ===== SCREEN SHAKE (Timer-Gefahr) ===== */
+#gameScreen.timer-shake { animation: screenShake 0.25s ease-in-out infinite; }
 @keyframes screenShake {
   0%,100% { transform: translate(0,0); }
   25%      { transform: translate(-3px, 2px); }
   50%      { transform: translate(3px, -2px); }
   75%      { transform: translate(-2px, 1px); }
+}
+
+/* ===== START LOOT PREVIEW ===== */
+.start-loot-preview {
+  font-size: 1.8rem;
+  letter-spacing: 8px;
+  filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
+  animation: lootFloat 3s ease-in-out infinite;
+}
+@keyframes lootFloat {
+  0%,100% { transform: translateY(0); opacity: 0.8; }
+  50%      { transform: translateY(-8px); opacity: 1; }
+}
+
+.trex-ascii {
+  filter: drop-shadow(0 0 25px rgba(0,212,255,0.7));
 }
 
 /* ===== TIMER BAR ===== */
@@ -705,9 +674,9 @@ body {
 @media (max-width: 480px) {
   .answers-grid { gap: 8px; }
   .answer-btn { padding: 12px 8px; min-height: 48px; }
-  .chase-container { height: 90px; }
-  .fn-character { transform-origin: bottom center; transform: scale(0.8); }
-  .storm-wall { width: 40px; }
+  .loot-scene { height: 90px; }
+  .ninja-char { font-size: 2.2rem; }
+  .loot-icon { font-size: 1.3rem; }
 }
 
 #importInput { display: none; }
@@ -789,8 +758,9 @@ body {
 <!-- ===== START SCREEN ===== -->
 <div id="startScreen" class="screen active">
   <div class="game-title">T-REX<br>VOKABEL-JAGD</div>
-  <div class="game-subtitle">LERNE ODER WERDE GEFRESSEN!</div>
-  <div class="trex-ascii">&#x1F996;</div>
+  <div class="game-subtitle">&#x26A1; LOOTE ODER VERLIERE ALLES! &#x26A1;</div>
+  <div class="trex-ascii">&#x1F977;</div>
+  <div class="start-loot-preview">&#x1F52B; &#x26A1; &#x1F6E1;&#xFE0F; &#x2764;&#xFE0F;</div>
   <div>
     <div style="font-size:0.85rem; color:rgba(245,240,232,0.6); margin-bottom:8px;">SCHWIERIGKEIT</div>
     <div class="difficulty-select">
@@ -816,32 +786,12 @@ body {
     <div class="hud-streak" id="streakDisplay"></div>
   </div>
 
-  <div class="chase-container" id="chaseScene">
-    <div class="tree-scroll">
-      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
-      <span class="t-tree" style="font-size:2.2rem;">&#x1F33F;</span>
-      <span class="t-tree" style="font-size:1.8rem;">&#x1F334;</span>
-      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
-      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
-      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
-      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
-      <span class="t-tree" style="font-size:2.2rem;">&#x1F33F;</span>
-      <span class="t-tree" style="font-size:1.8rem;">&#x1F334;</span>
-      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
+  <div class="loot-scene" id="lootScene">
+    <div class="ninja-wrap">
+      <div class="ninja-char" id="ninjaChar">&#x1F977;</div>
+      <div class="ninja-label">NINJA</div>
     </div>
-    <div class="storm-wall" id="trex" style="left: 2%;"></div>
-    <div class="fn-character running" id="runner" style="left: 75%;">
-      <div class="fn-upper">
-        <div class="fn-helmet"></div>
-        <div class="fn-head"><div class="fn-visor"></div></div>
-        <div class="fn-body"><div class="fn-backpack"></div></div>
-      </div>
-      <div class="fn-legs">
-        <div class="fn-leg fn-leg-l"></div>
-        <div class="fn-leg fn-leg-r"></div>
-      </div>
-    </div>
-    <div class="ground"></div>
+    <div class="loot-display" id="lootDisplay"></div>
   </div>
 
   <div class="timer-container">
@@ -946,6 +896,11 @@ var timePerQuestion = 10;
 var gameState = null;
 var timerInterval = null;
 
+// ===== LOOT =====
+var LOOT_POOL = ["\uD83D\uDD2B","\u26A1","\uD83D\uDEE1\uFE0F","\u2764\uFE0F","\uD83D\uDC8A","\uD83C\uDFAF","\uD83E\uDDEA","\uD83D\uDCA3"];
+var MAX_LOOT = 8;
+var START_LOOT = 3;
+
 // ===== SAFE STORAGE =====
 function storageGet(key) {
   try { return localStorage.getItem(key); } catch(e) { return null; }
@@ -1022,6 +977,9 @@ function startGame() {
   var shuffled = shuffle(vocab);
   var selected = shuffled.slice(0, Math.min(20, shuffled.length));
 
+  var startLoot = [];
+  for (var s = 0; s < START_LOOT; s++) { startLoot.push(pickRandom(LOOT_POOL)); }
+
   gameState = {
     questions: selected,
     currentIndex: 0,
@@ -1032,15 +990,14 @@ function startGame() {
     wrong: 0,
     mistakes: [],
     timeLeft: timePerQuestion,
-    trexPos: 2,
-    runnerPos: 75,
+    loot: startLoot,
     eaten: false
   };
 
   showScreen("gameScreen");
-  document.getElementById("chaseScene").classList.remove("storm-danger");
+  document.getElementById("gameScreen").classList.remove("timer-shake");
   document.getElementById("totalQuestions").textContent = selected.length;
-  updateChasePositions();
+  renderLoot();
   nextQuestion();
 }
 
@@ -1111,11 +1068,17 @@ function startTimer() {
     var remaining = Math.max(0, 1 - elapsed / totalMs);
     bar.style.width = (remaining * 100) + "%";
 
-    if (remaining < 0.25) { bar.classList.add("danger"); }
-    else { bar.classList.remove("danger"); }
+    if (remaining < 0.25) {
+      bar.classList.add("danger");
+      document.getElementById("gameScreen").classList.add("timer-shake");
+    } else {
+      bar.classList.remove("danger");
+      document.getElementById("gameScreen").classList.remove("timer-shake");
+    }
 
     if (remaining <= 0) {
       clearInterval(timerInterval);
+      document.getElementById("gameScreen").classList.remove("timer-shake");
       handleTimeout();
     }
   }, 50);
@@ -1125,6 +1088,8 @@ function handleAnswer(selected, correct, btn) {
   clearInterval(timerInterval);
   var buttons = document.querySelectorAll(".answer-btn");
 
+  document.getElementById("gameScreen").classList.remove("timer-shake");
+
   if (selected === correct) {
     btn.classList.add("correct");
     gameState.score += 10 + Math.floor(gameState.streak * 2);
@@ -1132,9 +1097,9 @@ function handleAnswer(selected, correct, btn) {
     gameState.streak++;
     if (gameState.streak > gameState.maxStreak) gameState.maxStreak = gameState.streak;
 
+    if (gameState.loot.length < MAX_LOOT) { gameState.loot.push(pickRandom(LOOT_POOL)); }
+    triggerNinjaAnim("got-loot");
     showFeedback(pickRandom(["SUPER!", "RICHTIG!", "PERFEKT!", "TOLL!", "YEAH!"]), "good");
-    gameState.runnerPos = Math.min(85, gameState.runnerPos + 3);
-    gameState.trexPos = Math.max(2, gameState.trexPos - 1);
   } else {
     btn.classList.add("wrong");
     for (var i = 0; i < buttons.length; i++) {
@@ -1146,14 +1111,15 @@ function handleAnswer(selected, correct, btn) {
     var q = gameState.questions[gameState.currentIndex];
     gameState.mistakes.push({ en: q.en, de: q.de });
 
+    if (gameState.loot.length > 0) { gameState.loot.pop(); }
+    triggerNinjaAnim("lost-loot");
     showFeedback(pickRandom(["FALSCH!", "NEIN!", "GRRRR!"]), "bad");
-    gameState.trexPos = Math.min(gameState.runnerPos - 8, gameState.trexPos + 10);
   }
 
   for (var j = 0; j < buttons.length; j++) { buttons[j].classList.add("disabled"); }
   updateStreakDisplay();
-  updateChasePositions();
-  checkEaten();
+  renderLoot();
+  checkLoot();
 
   if (!gameState.eaten) {
     setTimeout(function() {
@@ -1178,11 +1144,12 @@ function handleTimeout() {
   gameState.streak = 0;
   gameState.mistakes.push({ en: q.en, de: q.de });
 
+  if (gameState.loot.length > 0) { gameState.loot.pop(); }
+  triggerNinjaAnim("lost-loot");
   showFeedback("\u23F0 ZU LANGSAM!", "bad");
-  gameState.trexPos = Math.min(gameState.runnerPos - 8, gameState.trexPos + 14);
   updateStreakDisplay();
-  updateChasePositions();
-  checkEaten();
+  renderLoot();
+  checkLoot();
 
   if (!gameState.eaten) {
     setTimeout(function() {
@@ -1192,37 +1159,44 @@ function handleTimeout() {
   }
 }
 
-function checkEaten() {
-  var chaseEl = document.getElementById("chaseScene");
-  if (gameState.runnerPos - gameState.trexPos < 25) {
-    chaseEl.classList.add("storm-danger");
-  } else {
-    chaseEl.classList.remove("storm-danger");
-  }
-  if (gameState.trexPos >= gameState.runnerPos - 10) {
+function checkLoot() {
+  if (gameState.loot.length === 0) {
     gameState.eaten = true;
-    chaseEl.classList.remove("storm-danger");
     clearInterval(timerInterval);
-    showEatenAnimation();
+    document.getElementById("gameScreen").classList.remove("timer-shake");
+    showNoLootAnimation();
   }
 }
 
-function showEatenAnimation() {
+function showNoLootAnimation() {
   var overlay = document.createElement("div");
   overlay.className = "eaten-overlay";
-  overlay.innerHTML = '<div class="eaten-scene">&#x1F300;&#x26A1;</div><div class="eaten-text">VOM STURM ERWISCHT!</div>';
+  overlay.innerHTML = '<div class="eaten-scene">&#x1F977;&#x1F4A8;</div><div class="eaten-text">KEIN LOOT MEHR!</div>';
   document.body.appendChild(overlay);
-
-  setTimeout(function() {
-    overlay.remove();
-    endGame(false);
-  }, 2500);
+  setTimeout(function() { overlay.remove(); endGame(false); }, 2500);
 }
 
-function updateChasePositions() {
-  if (!gameState) return;
-  document.getElementById("trex").style.left = gameState.trexPos + "%";
-  document.getElementById("runner").style.left = gameState.runnerPos + "%";
+function renderLoot() {
+  var display = document.getElementById("lootDisplay");
+  display.innerHTML = "";
+  if (gameState.loot.length === 0) {
+    display.innerHTML = '<span class="loot-empty-hint">KEIN LOOT!</span>';
+    return;
+  }
+  for (var i = 0; i < gameState.loot.length; i++) {
+    var span = document.createElement("span");
+    span.className = "loot-icon";
+    span.textContent = gameState.loot[i];
+    display.appendChild(span);
+  }
+}
+
+function triggerNinjaAnim(cls) {
+  var ninja = document.getElementById("ninjaChar");
+  ninja.classList.remove("got-loot", "lost-loot");
+  void ninja.offsetWidth;
+  ninja.classList.add(cls);
+  setTimeout(function() { ninja.classList.remove(cls); }, 500);
 }
 
 function updateStreakDisplay() {
