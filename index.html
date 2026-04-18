@@ -193,39 +193,121 @@ body {
   border-top: 2px solid rgba(139,68,247,0.4);
 }
 
-.chase-tree {
+/* ===== STORM WALL ===== */
+.storm-wall {
   position: absolute;
-  bottom: 20px;
-  opacity: 0.4;
+  top: 0; bottom: 0;
+  width: 55px;
+  background: linear-gradient(90deg,
+    rgba(139,68,247,0.95) 0%,
+    rgba(100,20,200,0.65) 50%,
+    transparent 100%);
+  border-right: 2px solid rgba(200,130,255,0.9);
+  box-shadow: 6px 0 30px rgba(139,68,247,0.8), inset -4px 0 15px rgba(255,150,255,0.3);
+  transition: left 0.5s ease;
+  animation: stormPulse 2s ease-in-out infinite;
+}
+@keyframes stormPulse {
+  0%,100% { opacity: 0.85; box-shadow: 6px 0 25px rgba(139,68,247,0.7); }
+  50%      { opacity: 1;    box-shadow: 6px 0 50px rgba(139,68,247,1), 6px 0 80px rgba(200,100,255,0.4); }
 }
 
-.runner {
+/* ===== SCROLLING TREES ===== */
+.tree-scroll {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  display: flex;
+  gap: 90px;
+  align-items: flex-end;
+  white-space: nowrap;
+  opacity: 0.45;
+  animation: treeScroll 7s linear infinite;
+}
+.t-tree { line-height: 1; }
+@keyframes treeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ===== FORTNITE CHARACTER ===== */
+.fn-character {
   position: absolute;
   bottom: 25px;
-  font-size: 2.5rem;
+  width: 28px;
   transition: left 0.5s ease;
-  filter: drop-shadow(0 0 10px rgba(0,212,255,0.8)) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
 }
-.runner.running { animation: runBob 0.3s ease-in-out infinite; }
-
-@keyframes runBob {
-  0%, 100% { transform: translateY(0) scaleX(-1); }
-  50% { transform: translateY(-5px) scaleX(-1); }
+.fn-upper { display: flex; flex-direction: column; align-items: center; }
+.fn-helmet {
+  width: 22px; height: 10px;
+  background: linear-gradient(135deg, #00d4ff, #0052cc);
+  border-radius: 4px 4px 0 0;
 }
-
-.trex {
+.fn-head {
+  width: 20px; height: 18px;
+  background: #f5c48a;
+  border-radius: 2px;
+  position: relative;
+}
+.fn-visor {
   position: absolute;
-  bottom: 25px;
-  font-size: 3.5rem;
-  transition: left 0.5s ease;
-  filter: drop-shadow(0 0 20px rgba(139,68,247,0.8)) drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-  transform: scaleX(-1);
+  top: 5px; left: 2px; right: 2px; height: 6px;
+  background: rgba(0,220,255,0.85);
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(0,212,255,1);
 }
-.trex.chasing { animation: trexStomp 0.4s ease-in-out infinite; }
+.fn-body {
+  width: 24px; height: 20px;
+  background: linear-gradient(180deg, #1a8cff, #003a8c);
+  border-radius: 2px;
+  position: relative;
+}
+.fn-backpack {
+  position: absolute;
+  right: -7px; top: 2px;
+  width: 7px; height: 14px;
+  background: #8b44f7;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(139,68,247,0.8);
+}
+.fn-legs {
+  display: flex;
+  gap: 4px;
+  margin-top: 1px;
+}
+.fn-leg {
+  width: 9px; height: 17px;
+  background: linear-gradient(180deg, #1a5276, #0a1a30);
+  border-radius: 2px;
+  transform-origin: top center;
+}
+.fn-character.running .fn-leg-l { animation: legL 0.35s ease-in-out infinite; }
+.fn-character.running .fn-leg-r { animation: legR 0.35s ease-in-out infinite; }
+@keyframes legL {
+  0%,100% { transform: rotate(-18deg); }
+  50%      { transform: rotate(18deg); }
+}
+@keyframes legR {
+  0%,100% { transform: rotate(18deg); }
+  50%      { transform: rotate(-18deg); }
+}
+.fn-character.running .fn-upper { animation: bodyBob 0.35s ease-in-out infinite; }
+@keyframes bodyBob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
 
-@keyframes trexStomp {
-  0%, 100% { transform: scaleX(-1) translateY(0); }
-  50% { transform: scaleX(-1) translateY(-3px); }
+/* ===== SCREEN SHAKE ===== */
+.chase-container.storm-danger { animation: screenShake 0.25s ease-in-out infinite; }
+@keyframes screenShake {
+  0%,100% { transform: translate(0,0); }
+  25%      { transform: translate(-3px, 2px); }
+  50%      { transform: translate(3px, -2px); }
+  75%      { transform: translate(-2px, 1px); }
 }
 
 /* ===== TIMER BAR ===== */
@@ -624,8 +706,8 @@ body {
   .answers-grid { gap: 8px; }
   .answer-btn { padding: 12px 8px; min-height: 48px; }
   .chase-container { height: 90px; }
-  .runner { font-size: 2rem; }
-  .trex { font-size: 2.8rem; }
+  .fn-character { transform-origin: bottom center; transform: scale(0.8); }
+  .storm-wall { width: 40px; }
 }
 
 #importInput { display: none; }
@@ -735,13 +817,30 @@ body {
   </div>
 
   <div class="chase-container" id="chaseScene">
-    <div class="chase-tree" style="left:10%; font-size:1.5rem;">&#x1F334;</div>
-    <div class="chase-tree" style="left:30%; font-size:2.2rem;">&#x1F33F;</div>
-    <div class="chase-tree" style="left:55%; font-size:1.8rem;">&#x1F334;</div>
-    <div class="chase-tree" style="left:78%; font-size:2rem;">&#x1F33F;</div>
-    <div class="chase-tree" style="left:92%; font-size:1.5rem;">&#x1F334;</div>
-    <div class="trex chasing" id="trex" style="left: 2%;">&#x1F996;</div>
-    <div class="runner running" id="runner" style="left: 75%;">&#x1F3C3;</div>
+    <div class="tree-scroll">
+      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
+      <span class="t-tree" style="font-size:2.2rem;">&#x1F33F;</span>
+      <span class="t-tree" style="font-size:1.8rem;">&#x1F334;</span>
+      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
+      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
+      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
+      <span class="t-tree" style="font-size:1.5rem;">&#x1F334;</span>
+      <span class="t-tree" style="font-size:2.2rem;">&#x1F33F;</span>
+      <span class="t-tree" style="font-size:1.8rem;">&#x1F334;</span>
+      <span class="t-tree" style="font-size:2rem;">&#x1F33F;</span>
+    </div>
+    <div class="storm-wall" id="trex" style="left: 2%;"></div>
+    <div class="fn-character running" id="runner" style="left: 75%;">
+      <div class="fn-upper">
+        <div class="fn-helmet"></div>
+        <div class="fn-head"><div class="fn-visor"></div></div>
+        <div class="fn-body"><div class="fn-backpack"></div></div>
+      </div>
+      <div class="fn-legs">
+        <div class="fn-leg fn-leg-l"></div>
+        <div class="fn-leg fn-leg-r"></div>
+      </div>
+    </div>
     <div class="ground"></div>
   </div>
 
@@ -939,6 +1038,7 @@ function startGame() {
   };
 
   showScreen("gameScreen");
+  document.getElementById("chaseScene").classList.remove("storm-danger");
   document.getElementById("totalQuestions").textContent = selected.length;
   updateChasePositions();
   nextQuestion();
@@ -1093,8 +1193,15 @@ function handleTimeout() {
 }
 
 function checkEaten() {
+  var chaseEl = document.getElementById("chaseScene");
+  if (gameState.runnerPos - gameState.trexPos < 25) {
+    chaseEl.classList.add("storm-danger");
+  } else {
+    chaseEl.classList.remove("storm-danger");
+  }
   if (gameState.trexPos >= gameState.runnerPos - 10) {
     gameState.eaten = true;
+    chaseEl.classList.remove("storm-danger");
     clearInterval(timerInterval);
     showEatenAnimation();
   }
@@ -1103,7 +1210,7 @@ function checkEaten() {
 function showEatenAnimation() {
   var overlay = document.createElement("div");
   overlay.className = "eaten-overlay";
-  overlay.innerHTML = '<div class="eaten-scene">&#x1F996;&#x1F4A5;</div><div class="eaten-text">GESCHNAPPT!</div>';
+  overlay.innerHTML = '<div class="eaten-scene">&#x1F300;&#x26A1;</div><div class="eaten-text">VOM STURM ERWISCHT!</div>';
   document.body.appendChild(overlay);
 
   setTimeout(function() {
